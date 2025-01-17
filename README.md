@@ -1,8 +1,7 @@
 
 # Cheapest Transfer Route
 
-This application calculates the cheapest transfer route using the 0/1 Knapsack algorithm. It provides a REST API for calculating the cheapest route based on the available transfers and maximum weight.
-
+This application uses the 0/1 Knapsack algorithm to calculate the optimal transfer route, minimizing cost based on a given maximum weight. It exposes a single POST API endpoint that accepts available transfers and the maximum weight to compute the cheapest route.
 ## Table of Contents
 
 - [How to Build and Run the Application](#how-to-build-and-run-the-application)
@@ -87,24 +86,22 @@ curl --location 'http://localhost:8081/calculate-cheapest-route' \
 --data '{
     "maxWeight": 15,
     "availableTransfers": [
-        {
-            "weight": 5,
-            "cost": 10
-        },
-        {
-            "weight": 10,
-            "cost": 20
-        },
-        {
-            "weight": 3,
-            "cost": 5
-        },
-        {
-            "weight": 8,
-            "cost": 15
-        }
+      { "weight": 5, "cost": 10 },
+      { "weight": 10, "cost": 20 },
+      { "weight": 3, "cost": 5 },
+      { "weight": 8, "cost": 15 }
     ]
 }'
 ```
-
+Response:
+```json
+{
+   "selectedTransfers": [
+      { "weight": 5, "cost": 10 },
+      { "weight": 10, "cost": 20 }
+   ],
+   "totalCost": 30,
+   "totalWeight": 15
+}
+```
 

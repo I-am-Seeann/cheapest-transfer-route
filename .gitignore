@@ -11,6 +11,7 @@
 # Gradle-specific files
 .gradle/
 build/
+!gradle/wrapper/gradle-wrapper.jar
 
 # Maven-specific files
 target/
