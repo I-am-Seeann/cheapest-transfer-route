@@ -8,10 +8,7 @@
 *.sln
 *.sw?
 
-# Gradle-specific files
-.gradle/
-build/
-!gradle/wrapper/gradle-wrapper.jar
+
 
 # Maven-specific files
 target/
@@ -28,6 +25,11 @@ Thumbs.db
 *.jar
 *.war
 *.ear
+
+# Gradle-specific files
+.gradle/
+build/
+!gradle/wrapper/gradle-wrapper.jar
 
 # Generated files
 out/
