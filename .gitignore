@@ -1,0 +1,43 @@
+# IDE-specific files
+.idea/
+*.iml
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Gradle-specific files
+.gradle/
+build/
+
+# Maven-specific files
+target/
+
+# Logs and OS files
+*.log
+*.DS_Store
+Thumbs.db
+
+# Class files
+*.class
+
+# JAR/WAR/EAR files
+*.jar
+*.war
+*.ear
+
+# Generated files
+out/
+
+# Temporary files
+*.tmp
+*.bak
+*.swp
+
+# Environment variable files
+.env
+
+# Dependency directories
+node_modules/
