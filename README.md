@@ -14,8 +14,7 @@ This application uses the 0/1 Knapsack algorithm to calculate the optimal transf
 ## How to Build and Run the Application
 
 ### Prerequisites
-- Java 17 or newer
-- Gradle 
+- Java 17 
 
 ### Build the Application
 
