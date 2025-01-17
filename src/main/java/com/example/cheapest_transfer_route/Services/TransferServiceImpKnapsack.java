@@ -11,10 +11,6 @@ import java.util.List;
 public class TransferServiceImpKnapsack implements TransferService {
     @Override
     public TransferResponse calculateCheapestRoute(TransferRequest request) {
-        if(request == null
-                || request.availableTransfers() == null
-                || request.maxWeight() < 0)
-            return null;
 
         int maxWeight = request.maxWeight();
         List<Transfer> transfers = request.availableTransfers();

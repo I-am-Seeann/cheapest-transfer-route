@@ -66,16 +66,16 @@ class TransferControllerTests {
 						), 180, 25)
 				},
 
-				// Test 5: Knapsack with multiple items exceeding the capacity
+				// Test 5: Prioritize cost over weight
 				{
 						new TransferRequest(10, List.of(
 								new Transfer(15, 100),
-								new Transfer(10, 60),
-								new Transfer(8, 50)
+								new Transfer(10, 50),
+								new Transfer(8, 60)
 						)),
 						new TransferResponse(List.of(
-								new Transfer(10, 60)
-						), 60, 10)
+								new Transfer(8, 60)
+						), 60, 8)
 				},
 
 				// Test 6: Max weight is 0
@@ -87,16 +87,7 @@ class TransferControllerTests {
 						new TransferResponse(List.of(), 0, 0)
 				},
 
-				// Test 7: One item only, and it fits
-				{
-						new TransferRequest(10, List.of(
-								new Transfer(10, 50)
-						)),
-						new TransferResponse(List.of(
-								new Transfer(10, 50)
-						), 50, 10)
-				},
-				// Test 8: items with same weight and same cost
+				// Test 7: items with same weight and same cost
 				{
 						new TransferRequest(30, List.of(
 							new Transfer(20, 200),

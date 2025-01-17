@@ -64,4 +64,5 @@ public class TransferControllerTest {
                 .andExpect(jsonPath("$.totalWeight").value(15))
                 .andExpect(jsonPath("$.selectedTransfers.length()").value(2));
     }
+
 }

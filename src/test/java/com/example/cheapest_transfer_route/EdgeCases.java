@@ -36,8 +36,8 @@ public class EdgeCases {
     }
 
     @Test
-    void invalidRequest1() {
-        // Given an invalid request (e.g., null value for required fields)
+    void transfersListIsNull() {
+        // Given a null value for transfers list
         TransferRequest request = new TransferRequest(0, null);
 
         // When calling the /calculate-cheapest-route endpoint
@@ -48,7 +48,7 @@ public class EdgeCases {
     }
 
     @Test
-    void invalidRequest2() {
+    void requestIsNull() {
         // Given an invalid request
         TransferRequest request = null;
 
@@ -58,4 +58,50 @@ public class EdgeCases {
         // Then verify that the server responds with a BadRequest (400) error
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
     }
+
+    @Test
+    void maxWeightIsNegative() {
+        // Given a valid request
+        TransferRequest request = new TransferRequest(-15, List.of(
+                new Transfer(5, 10),
+                new Transfer(10, 20)
+        ));
+
+        // When calling the /calculate-cheapest-route endpoint
+        ResponseEntity<String> response = restTemplate.postForEntity("/calculate-cheapest-route", request, String.class);
+
+        // Then verify that the server responds with a BadRequest (400) error
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
+    }
+
+    @Test
+    void transferCostIsNegative() {
+        // Given a valid request
+        TransferRequest request = new TransferRequest(15, List.of(
+                new Transfer(5, -10),
+                new Transfer(10, 20)
+        ));
+
+        // When calling the /calculate-cheapest-route endpoint
+        ResponseEntity<String> response = restTemplate.postForEntity("/calculate-cheapest-route", request, String.class);
+
+        // Then verify that the server responds with a BadRequest (400) error
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
+    }
+
+    @Test
+    void transferWeightIsNegative() {
+        // Given a valid request
+        TransferRequest request = new TransferRequest(15, List.of(
+                new Transfer(5, 10),
+                new Transfer(-10, 20)
+        ));
+
+        // When calling the /calculate-cheapest-route endpoint
+        ResponseEntity<String> response = restTemplate.postForEntity("/calculate-cheapest-route", request, String.class);
+
+        // Then verify that the server responds with a BadRequest (400) error
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
+    }
+
 }
