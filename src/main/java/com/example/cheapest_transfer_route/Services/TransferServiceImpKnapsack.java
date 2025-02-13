@@ -3,17 +3,48 @@ package com.example.cheapest_transfer_route.Services;
 import com.example.cheapest_transfer_route.Models.Transfer;
 import com.example.cheapest_transfer_route.Models.TransferRequest;
 import com.example.cheapest_transfer_route.Models.TransferResponse;
+import com.example.cheapest_transfer_route.Repository.ConcreteTransferRepository;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.IntStream;
 
+@Service
 public class TransferServiceImpKnapsack implements TransferService {
+
+    private ConcreteTransferRepository concreteTransferRepository;
+    public TransferServiceImpKnapsack(ConcreteTransferRepository concreteTransferRepository) {
+        this.concreteTransferRepository = concreteTransferRepository;
+    }
+
     @Override
     public TransferResponse calculateCheapestRoute(TransferRequest request) {
 
         int maxWeight = request.maxWeight();
         List<Transfer> transfers = request.availableTransfers();
+        List<Transfer> selectedTransfers = new ArrayList<>();
+
+        int usedWeight = actualLogic(maxWeight, selectedTransfers, transfers);
+
+        if(usedWeight > 0) {
+            actualLogic(maxWeight - usedWeight, selectedTransfers, concreteTransferRepository.getUnusedTransfers());
+            concreteTransferRepository.getUnusedTransfers().removeAll(selectedTransfers);
+        }
+        for(Transfer transfer : transfers) {
+            if (!selectedTransfers.contains(transfer)) {
+                concreteTransferRepository.getUnusedTransfers().add(transfer);
+            }
+        }
+
+        Collections.reverse(selectedTransfers);
+        int finalCost =  selectedTransfers.stream().mapToInt(i -> i.cost()).sum();
+        int finalWight =  selectedTransfers.stream().mapToInt(i -> i.weight()).sum();
+        return new TransferResponse(selectedTransfers, finalCost, finalWight);
+    }
+
+    private int actualLogic(int maxWeight, List<Transfer> selectedTransfers, List<Transfer> transfers){
         int n = transfers.size();
 
         // Convert weights and costs into arrays for easier processing
@@ -42,7 +73,6 @@ public class TransferServiceImpKnapsack implements TransferService {
         }
 
         // Find the selected transfers by backtracking the DP table
-        ArrayList<Transfer> selectedTransfers = new ArrayList<>();
         int totalCost = dp[n][maxWeight];
         int totalWeight = 0;
 
@@ -55,9 +85,14 @@ public class TransferServiceImpKnapsack implements TransferService {
                 totalWeight += transfer.weight();
                 w -= weights[i - 1];
             }
+//            else{
+//                Transfer transfer = transfers.get(i - 1);
+//                concreteTransferRepository.getUnusedTransfers().remove(transfer);
+//
+//                concreteTransferRepository.getUnusedTransfers().add(transfer);
+//            }
         }
 
-        Collections.reverse(selectedTransfers);
-        return new TransferResponse(selectedTransfers, dp[n][maxWeight], totalWeight);
+        return totalWeight;
     }
 }
